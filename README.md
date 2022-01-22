@@ -16,10 +16,11 @@ You can use sample basic snippet of plugin:
 <?php snippet('detect-ad-block') ?>
 ```
 
-If you want to customize overlay, you can override `detect-ad-block-overlay` snippet:
+If you want to customize overlay, you can override `detect-ad-block-overlay` snippet like following:
 
-```php
- <div id="custom-modal">
+```html
+<!-- /site/snippets/detect-ad-block-overlay.php -->
+<div id="custom-modal">
     <h3>Warning!</h3>
     <p>Looks like you are using ad blocker. Please disable and refresh the page!</p>
     <button type="button" onclick="location.reload();">OK</button>
