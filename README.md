@@ -13,13 +13,13 @@ This plugin helps you detect ad blockers and manage the warning messages that wi
 You can use sample basic snippet of plugin:
 
 ```php
-<?php snippet('detect-ad-block') ?>
+<?php snippet('detect-adblock') ?>
 ```
 
-If you want to customize overlay, you can override `detect-ad-block-overlay` snippet like following:
+If you want to customize overlay, you can override `detect-adblock-overlay` snippet like following:
 
 ```html
-<!-- /site/snippets/detect-ad-block-overlay.php -->
+<!-- /site/snippets/detect-adblock-overlay.php -->
 <div id="custom-modal">
     <h3>Warning!</h3>
     <p>Looks like you are using ad blocker. Please disable and refresh the page!</p>
@@ -33,11 +33,11 @@ The default values of the package are:
 
 | Option | Type    | Default                                                   | Description         |
 |:-------|:--------|:----------------------------------------------------------|:--------------------|
-| title  | string  | Ad block detected!                                        | Overlay title       |
+| title  | string  | AdBlock detected!                                        | Overlay title       |
 | text   | string | Please disable AdBlock and refresh to see requested page. | Overlay text        |
 | button | string | Refresh the page                                          | Overlay button text |
 
-All the values can be updated in the `config.php` file and prefixed with `clicktonext.detect-ad-block.`.
+All the values can be updated in the `config.php` file and prefixed with `clicktonext.detect-adblock.`.
 
 ## Sample options
 
@@ -46,7 +46,7 @@ All the values can be updated in the `config.php` file and prefixed with `clickt
 
 // /site/config/config.php
 return [
-    'clicktonext.detect-ad-block' => [
+    'clicktonext.detect-adblock' => [
         'title' => 'Warning! ',
         'text' => 'Looks like you are using ad blocker. Please disable and refresh the page!',
         'button' => 'OK',

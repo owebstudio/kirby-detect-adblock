@@ -2,14 +2,14 @@
 
 use Kirby\Cms\App as Kirby;
 
-Kirby::plugin('clicktonext/detect-ad-block', [
+Kirby::plugin('clicktonext/detect-adblock', [
     'options' => [
-        'title' => 'Ad block detected!',
+        'title' => 'AdBlock detected!',
         'text' => 'Please disable AdBlock and refresh to see requested page.',
         'button' => 'Refresh the page',
     ],
     'snippets' => [
-        'detect-ad-block' => __DIR__ . '/snippets/detect-ad-block.php',
-        'detect-ad-block-overlay' => __DIR__ . '/snippets/detect-ad-block-overlay.php',
+        'detect-adblock' => __DIR__ . '/snippets/detect-adblock.php',
+        'detect-adblock-overlay' => __DIR__ . '/snippets/detect-adblock-overlay.php',
     ]
 ]);

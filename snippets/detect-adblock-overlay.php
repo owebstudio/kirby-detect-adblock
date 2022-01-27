@@ -44,8 +44,8 @@
 
 <div id="detectAdBlockOverlay">
     <div id="detectAdBlockInfo">
-        <h3><?= option('clicktonext.detect-ad-block.title') ?></h3>
-        <p><?= option('clicktonext.detect-ad-block.text') ?></p>
-        <button type="button" onclick="location.reload();"><?= option('clicktonext.detect-ad-block.button') ?></button>
+        <h3><?= option('clicktonext.detect-adblock.title') ?></h3>
+        <p><?= option('clicktonext.detect-adblock.text') ?></p>
+        <button type="button" onclick="location.reload();"><?= option('clicktonext.detect-adblock.button') ?></button>
     </div>
 </div>

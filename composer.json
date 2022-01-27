@@ -1,5 +1,5 @@
 {
-  "name": "clicktonext/detect-ad-block",
+  "name": "clicktonext/kirby-detect-adblock",
   "description": "This plugin helps you detect ad blockers and manage the warning messages that will be displayed for Kirby 3.",
   "version": "1.0.0",
   "type": "kirby-plugin",
@@ -10,9 +10,9 @@
     "kirby-3",
     "kirby3-plugin",
     "kirby-plugin",
-    "kirby-instagram",
-    "ad-block",
-    "detect-ad-blocker"
+    "clicktonext-plugin",
+    "adblock",
+    "detect-adblocker"
   ],
   "homepage": "https://clicktonext.com",
   "support": {
@@ -35,7 +35,7 @@
     "sort-packages": true
   },
   "extra": {
-    "installer-name": "kirby-detect-ad-block"
+    "installer-name": "kirby-detect-adblock"
   },
   "minimum-stability": "dev",
   "prefer-stable": true

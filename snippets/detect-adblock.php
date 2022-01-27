@@ -1,4 +1,4 @@
-<?php snippet('detect-ad-block-overlay') ?>
+<?php snippet('detect-adblock-overlay') ?>
 
 <script>
   window.addEventListener('load', function () {
