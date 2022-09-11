@@ -2,7 +2,7 @@
 
 use Kirby\Cms\App as Kirby;
 
-Kirby::plugin('clicktonext/detect-adblock', [
+Kirby::plugin('kirbynext/detect-adblock', [
     'options' => [
         'title' => 'AdBlock detected!',
         'text' => 'Please disable AdBlock and refresh to see requested page.',

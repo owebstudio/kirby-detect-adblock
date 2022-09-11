@@ -37,7 +37,7 @@ The default values of the package are:
 | text   | string | Please disable AdBlock and refresh to see requested page. | Overlay text        |
 | button | string | Refresh the page                                          | Overlay button text |
 
-All the values can be updated in the `config.php` file and prefixed with `clicktonext.detect-adblock.`.
+All the values can be updated in the `config.php` file and prefixed with `kirbynext.detect-adblock.`.
 
 ## Sample options
 
@@ -46,7 +46,7 @@ All the values can be updated in the `config.php` file and prefixed with `clickt
 
 // /site/config/config.php
 return [
-    'clicktonext.detect-adblock' => [
+    'kirbynext.detect-adblock' => [
         'title' => 'Warning! ',
         'text' => 'Looks like you are using ad blocker. Please disable and refresh the page!',
         'button' => 'OK',
