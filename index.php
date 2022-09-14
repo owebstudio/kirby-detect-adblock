@@ -2,7 +2,7 @@
 
 use Kirby\Cms\App as Kirby;
 
-Kirby::plugin('kirbynext/detect-adblock', [
+Kirby::plugin('owebstudio/detect-adblock', [
     'options' => [
         'title' => 'AdBlock detected!',
         'text' => 'Please disable AdBlock and refresh to see requested page.',

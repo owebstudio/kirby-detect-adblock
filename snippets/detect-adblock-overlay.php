@@ -44,8 +44,8 @@
 
 <div id="detectAdBlockOverlay">
     <div id="detectAdBlockInfo">
-        <h3><?= option('kirbynext.detect-adblock.title') ?></h3>
-        <p><?= option('kirbynext.detect-adblock.text') ?></p>
-        <button type="button" onclick="location.reload();"><?= option('kirbynext.detect-adblock.button') ?></button>
+        <h3><?= option('owebstudio.detect-adblock.title') ?></h3>
+        <p><?= option('owebstudio.detect-adblock.text') ?></p>
+        <button type="button" onclick="location.reload();"><?= option('owebstudio.detect-adblock.button') ?></button>
     </div>
 </div>

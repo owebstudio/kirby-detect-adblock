@@ -1,28 +1,28 @@
 {
-  "name": "kirbynext/kirby-detect-adblock",
+  "name": "owebstudio/kirby-detect-adblock",
   "description": "This plugin helps you detect ad blockers and manage the warning messages that will be displayed for Kirby 3.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "kirby-plugin",
   "license": "MIT",
   "keywords": [
-    "kirbynext",
+    "owebstudio",
+    "owebstudio-plugin",
     "kirby",
     "kirby-3",
     "kirby3-plugin",
     "kirby-plugin",
-    "kirbynext-plugin",
     "adblock",
     "detect-adblocker"
   ],
-  "homepage": "https://kirbynext.com",
+  "homepage": "https://owebstudio.com",
   "support": {
-    "email": "support@kirbynext.com"
+    "email": "support@owebstudio.com"
   },
   "authors": [
     {
-      "name": "Kirby Next",
-      "email": "contact@kirbynext.com",
-      "homepage": "https://kirbynext.com"
+      "name": "oweb studio",
+      "email": "contact@owebstudio.com",
+      "homepage": "https://owebstudio.com"
     }
   ],
   "require": {
