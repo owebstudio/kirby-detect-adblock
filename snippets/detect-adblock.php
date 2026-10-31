@@ -2,7 +2,7 @@
 
 /**
  * @var \Kirby\Cms\App $kirby
- * @var string|null $mode `overlay` or `banner`
+ * @var string|false|null $mode `overlay`, `banner` or `false` for no warning
  * @var int|null $remember Days to hide the banner after it was closed
  * @var string|array|null $title Title of the warning, or one per language code
  * @var string|array|null $text Text of the warning, or one per language code
@@ -30,13 +30,15 @@ $options = [
     'bait' => $kirby->plugin('owebstudio/detect-adblock')?->asset('prebid.js')?->url(),
 ];
 
-snippet('detect-adblock-overlay', [
-    'mode' => $mode,
-    'title' => $translate('title', $title ?? null),
-    'text' => $translate('text', $text ?? null, $mode === 'banner' ? 'owebstudio.detect-adblock.text.banner' : null),
-    'button' => $translate('button', $button ?? null),
-    'close' => $translate('close', $close ?? null),
-]);
+if ($mode !== false) {
+    snippet('detect-adblock-overlay', [
+        'mode' => $mode,
+        'title' => $translate('title', $title ?? null),
+        'text' => $translate('text', $text ?? null, $mode === 'banner' ? 'owebstudio.detect-adblock.text.banner' : null),
+        'button' => $translate('button', $button ?? null),
+        'close' => $translate('close', $close ?? null),
+    ]);
+}
 ?>
 
 <script nonce="<?= esc($kirby->nonce(), 'attr') ?>">
@@ -194,7 +196,18 @@ snippet('detect-adblock-overlay', [
       detect().then((detected) => {
         window.adBlockRunning = detected;
 
-        if (detected === true) {
+        document.dispatchEvent(new CustomEvent('adblock:checked', {
+          detail: { detected: detected }
+        }));
+
+        if (detected === false) {
+          return;
+        }
+
+        // listeners can call `event.preventDefault()` to show their own warning
+        const event = new CustomEvent('adblock:detected', { cancelable: true });
+
+        if (document.dispatchEvent(event) === true && options.mode !== false) {
           showNotice();
         }
       });
