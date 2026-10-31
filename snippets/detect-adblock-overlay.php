@@ -44,8 +44,8 @@
 
 <div id="detectAdBlockOverlay">
     <div id="detectAdBlockInfo">
-        <h3><?= option('owebstudio.detect-adblock.title') ?></h3>
-        <p><?= option('owebstudio.detect-adblock.text') ?></p>
-        <button type="button" onclick="location.reload();"><?= option('owebstudio.detect-adblock.button') ?></button>
+        <h3><?= esc(option('owebstudio.detect-adblock.title')) ?></h3>
+        <p><?= esc(option('owebstudio.detect-adblock.text')) ?></p>
+        <button type="button" onclick="location.reload();"><?= esc(option('owebstudio.detect-adblock.button')) ?></button>
     </div>
 </div>
