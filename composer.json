@@ -1,6 +1,6 @@
 {
   "name": "owebstudio/kirby-detect-adblock",
-  "description": "This plugin helps you detect ad blockers and manage the warning messages that will be displayed for Kirby 3.",
+  "description": "Detects ad blockers and shows your visitors a warning in a modal dialog or a banner.",
   "version": "1.0.2",
   "type": "kirby-plugin",
   "license": "MIT",
@@ -8,25 +8,23 @@
     "owebstudio",
     "owebstudio-plugin",
     "kirby",
-    "kirby-3",
-    "kirby3-plugin",
     "kirby-plugin",
     "adblock",
     "detect-adblocker"
   ],
-  "homepage": "https://owebstudio.com",
+  "homepage": "https://github.com/owebstudio/kirby-detect-adblock",
   "support": {
-    "email": "support@owebstudio.com"
+    "issues": "https://github.com/owebstudio/kirby-detect-adblock/issues",
+    "source": "https://github.com/owebstudio/kirby-detect-adblock"
   },
   "authors": [
     {
       "name": "oweb studio",
-      "email": "contact@owebstudio.com",
-      "homepage": "https://owebstudio.com"
+      "homepage": "https://github.com/owebstudio"
     }
   ],
   "require": {
-    "php": "^7.4|^8.0",
+    "php": "^8.2",
     "getkirby/composer-installer": "^1.2"
   },
   "config": {
@@ -35,8 +33,9 @@
     "sort-packages": true
   },
   "extra": {
-    "installer-name": "kirby-detect-adblock"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "installer-name": "kirby-detect-adblock",
+    "kirby": {
+      "compatible": "^5.0 || ^6.0"
+    }
+  }
 }
