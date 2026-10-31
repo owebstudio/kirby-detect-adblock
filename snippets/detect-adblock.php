@@ -2,31 +2,40 @@
 
 /**
  * @var \Kirby\Cms\App $kirby
+ * @var string|null $mode `overlay` or `banner`
+ * @var int|null $remember Days to hide the banner after it was closed
  * @var string|array|null $title Title of the warning, or one per language code
  * @var string|array|null $text Text of the warning, or one per language code
  * @var string|array|null $button Text of the reload button, or one per language code
+ * @var string|array|null $close Label of the close button, or one per language code
  */
 
 $kirby ??= kirby();
+$mode ??= option('owebstudio.detect-adblock.mode', 'overlay');
+$remember ??= option('owebstudio.detect-adblock.remember', 7);
 
-$translate = function (string $key, string|array|null $value): string {
+$translate = function (string $key, string|array|null $value, string|null $translation = null): string {
     $value ??= option('owebstudio.detect-adblock.' . $key);
 
     if (is_array($value) === true) {
         return (string)t($value);
     }
 
-    return $value ?? (string)t('owebstudio.detect-adblock.' . $key);
+    return $value ?? (string)t($translation ?? 'owebstudio.detect-adblock.' . $key);
 };
 
 $options = [
+    'mode' => $mode,
+    'remember' => (int)$remember,
     'bait' => $kirby->plugin('owebstudio/detect-adblock')?->asset('prebid.js')?->url(),
 ];
 
 snippet('detect-adblock-overlay', [
+    'mode' => $mode,
     'title' => $translate('title', $title ?? null),
-    'text' => $translate('text', $text ?? null),
+    'text' => $translate('text', $text ?? null, $mode === 'banner' ? 'owebstudio.detect-adblock.text.banner' : null),
     'button' => $translate('button', $button ?? null),
+    'close' => $translate('close', $close ?? null),
 ]);
 ?>
 
@@ -123,10 +132,48 @@ snippet('detect-adblock-overlay', [
       });
     }
 
+    function isDismissed() {
+      try {
+        const time = Number(localStorage.getItem('detect-adblock'));
+
+        return Date.now() - time < options.remember * 86400000;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function dismiss(notice) {
+      if (typeof notice.close === 'function') {
+        notice.close();
+      } else {
+        notice.hidden = true;
+      }
+
+      if (options.remember > 0) {
+        try {
+          localStorage.setItem('detect-adblock', String(Date.now()));
+        } catch (error) {}
+      }
+    }
+
     function showNotice() {
       const notice = document.querySelector('[data-detect-adblock]') || document.getElementById('detectAdBlockOverlay');
 
       if (notice === null) {
+        return;
+      }
+
+      if (options.mode === 'banner') {
+        if (isDismissed() === true) {
+          return;
+        }
+
+        if (typeof notice.show === 'function') {
+          notice.show();
+        } else {
+          notice.hidden = false;
+        }
+
         return;
       }
 
@@ -156,6 +203,13 @@ snippet('detect-adblock-overlay', [
     document.addEventListener('click', (event) => {
       if (event.target.closest('[data-detect-adblock-reload]')) {
         location.reload();
+      }
+
+      const close = event.target.closest('[data-detect-adblock-close]');
+      const notice = close ? close.closest('[data-detect-adblock]') : null;
+
+      if (notice && options.mode === 'banner') {
+        dismiss(notice);
       }
     });
 

@@ -4,9 +4,12 @@ use Kirby\Cms\App as Kirby;
 
 Kirby::plugin('owebstudio/detect-adblock', [
     'options' => [
+        'mode' => 'overlay',
+        'remember' => 7,
         'title' => null,
         'text' => null,
         'button' => null,
+        'close' => null,
     ],
     'snippets' => [
         'detect-adblock' => __DIR__ . '/snippets/detect-adblock.php',
