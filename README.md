@@ -1,3 +1,5 @@
+![Detect AdBlock, a Kirby plugin by oweb studio. Detect ad blockers and show your visitors a message.](.github/cover.png)
+
 # Kirby Detect Ad Block
 
 Detects ad blockers and shows your visitors a warning: a modal dialog that asks them to disable their ad blocker, or a banner they can close. The texts follow the language of your site.
