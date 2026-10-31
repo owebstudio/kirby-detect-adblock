@@ -18,11 +18,30 @@
       }();
 
       if (window.adBlockRunning === true) {
-        document.body.style.overflow = 'hidden';
-        document.getElementById("detectAdBlockOverlay").style.display = "block";
+        showNotice();
       }
     }, 1000);
   });
+
+  function showNotice() {
+    let notice = document.querySelector('[data-detect-adblock]') || document.getElementById('detectAdBlockOverlay');
+
+    if (notice === null) {
+      return;
+    }
+
+    document.body.style.overflow = 'hidden';
+
+    if (typeof notice.showModal === 'function') {
+      notice.addEventListener('cancel', (event) => event.preventDefault());
+      notice.addEventListener('close', () => notice.showModal());
+      notice.showModal();
+      return;
+    }
+
+    notice.hidden = false;
+    notice.style.display = 'block';
+  }
 
   document.addEventListener('click', function (event) {
     if (event.target.closest('[data-detect-adblock-reload]')) {
