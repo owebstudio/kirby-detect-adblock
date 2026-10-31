@@ -1,4 +1,4 @@
-<style>
+<style nonce="<?= esc($kirby->nonce(), 'attr') ?>">
     #detectAdBlockOverlay {
         position: fixed;
         display: none;
@@ -46,6 +46,6 @@
     <div id="detectAdBlockInfo">
         <h3><?= esc(option('owebstudio.detect-adblock.title')) ?></h3>
         <p><?= esc(option('owebstudio.detect-adblock.text')) ?></p>
-        <button type="button" onclick="location.reload();"><?= esc(option('owebstudio.detect-adblock.button')) ?></button>
+        <button type="button" data-detect-adblock-reload><?= esc(option('owebstudio.detect-adblock.button')) ?></button>
     </div>
 </div>

@@ -1,6 +1,6 @@
 <?php snippet('detect-adblock-overlay') ?>
 
-<script>
+<script nonce="<?= esc($kirby->nonce(), 'attr') ?>">
   window.addEventListener('load', function () {
     let detectAdBlock = document.createElement("div");
     detectAdBlock.id = 'detectAdBlock';
@@ -22,5 +22,11 @@
         document.getElementById("detectAdBlockOverlay").style.display = "block";
       }
     }, 1000);
+  });
+
+  document.addEventListener('click', function (event) {
+    if (event.target.closest('[data-detect-adblock-reload]')) {
+      location.reload();
+    }
   });
 </script>
