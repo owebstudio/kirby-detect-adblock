@@ -19,6 +19,10 @@ $translate = function (string $key, string|array|null $value): string {
     return $value ?? (string)t('owebstudio.detect-adblock.' . $key);
 };
 
+$options = [
+    'bait' => $kirby->plugin('owebstudio/detect-adblock')?->asset('prebid.js')?->url(),
+];
+
 snippet('detect-adblock-overlay', [
     'title' => $translate('title', $title ?? null),
     'text' => $translate('text', $text ?? null),
@@ -27,51 +31,138 @@ snippet('detect-adblock-overlay', [
 ?>
 
 <script nonce="<?= esc($kirby->nonce(), 'attr') ?>">
-  window.addEventListener('load', function () {
-    let detectAdBlock = document.createElement("div");
-    detectAdBlock.id = 'detectAdBlock';
-    detectAdBlock.style.width = '1px';
-    detectAdBlock.style.height = '1px';
-    detectAdBlock.style.position = 'absolute';
-    detectAdBlock.style.top = '-999em';
-    detectAdBlock.style.left = '-999em';
-    detectAdBlock.setAttribute('class', 'ads ad adsbox doubleclick ad-placement carbon-ads');
-    document.body.appendChild(detectAdBlock);
+  (function () {
+    const options = <?= json_encode($options, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES) ?>;
+    const nonce = document.currentScript ? document.currentScript.nonce : '';
 
-    setTimeout(() => {
-      window.adBlockRunning = function () {
-        return (getComputedStyle(document.getElementById("detectAdBlock"))["display"] === "none") ? true : false;
-      }();
-
-      if (window.adBlockRunning === true) {
-        showNotice();
+    function isHidden(element) {
+      if (element.isConnected === false || element.offsetParent === null || element.offsetHeight === 0) {
+        return true;
       }
-    }, 1000);
-  });
 
-  function showNotice() {
-    let notice = document.querySelector('[data-detect-adblock]') || document.getElementById('detectAdBlockOverlay');
+      const style = getComputedStyle(element);
 
-    if (notice === null) {
-      return;
+      return style.display === 'none' || style.visibility === 'hidden';
     }
 
-    document.body.style.overflow = 'hidden';
+    function createBait(attributes) {
+      const bait = document.createElement('div');
 
-    if (typeof notice.showModal === 'function') {
-      notice.addEventListener('cancel', (event) => event.preventDefault());
-      notice.addEventListener('close', () => notice.showModal());
-      notice.showModal();
-      return;
+      Object.assign(bait, attributes);
+      bait.setAttribute('aria-hidden', 'true');
+      bait.style.cssText = 'position: absolute; top: -10000px; left: -10000px; width: 1px; height: 1px;';
+      bait.textContent = '\u00a0';
+      document.body.appendChild(bait);
+
+      return bait;
     }
 
-    notice.hidden = false;
-    notice.style.display = 'block';
-  }
+    // ad blockers hide elements that look like ads
+    function detectHiddenBaits() {
+      const baits = [
+        createBait({ className: 'ad-slot adslot ad_unit sponsored-ad' }),
+        createBait({ id: 'ad_banner' })
+      ];
+      const start = Date.now();
 
-  document.addEventListener('click', function (event) {
-    if (event.target.closest('[data-detect-adblock-reload]')) {
-      location.reload();
+      return new Promise((resolve) => {
+        (function check() {
+          const hidden = baits.some(isHidden);
+
+          if (hidden === true || Date.now() - start >= 2000) {
+            baits.forEach((bait) => bait.remove());
+            resolve(hidden);
+            return;
+          }
+
+          setTimeout(check, 200);
+        })();
+      });
     }
-  });
+
+    // ad blockers block or replace scripts that look like ad scripts
+    function detectBlockedScript() {
+      return new Promise((resolve) => {
+        if (!options.bait || navigator.onLine === false) {
+          resolve(false);
+          return;
+        }
+
+        const script = document.createElement('script');
+
+        script.src = options.bait;
+        script.async = true;
+        script.nonce = nonce;
+        script.onload = () => resolve(window.detectAdblockBait !== true);
+        script.onerror = () => {
+          // only count it as blocked when the file itself can be loaded
+          fetch(options.bait, { cache: 'no-store' })
+            .then((response) => resolve(response.ok))
+            .catch(() => resolve(false));
+        };
+
+        setTimeout(() => resolve(false), 5000);
+        document.head.appendChild(script);
+      });
+    }
+
+    function detect() {
+      return new Promise((resolve) => {
+        let pending = 2;
+
+        const done = (detected) => {
+          pending--;
+
+          if (detected === true || pending === 0) {
+            resolve(detected);
+          }
+        };
+
+        detectHiddenBaits().then(done);
+        detectBlockedScript().then(done);
+      });
+    }
+
+    function showNotice() {
+      const notice = document.querySelector('[data-detect-adblock]') || document.getElementById('detectAdBlockOverlay');
+
+      if (notice === null) {
+        return;
+      }
+
+      document.body.style.overflow = 'hidden';
+
+      if (typeof notice.showModal === 'function') {
+        notice.addEventListener('cancel', (event) => event.preventDefault());
+        notice.addEventListener('close', () => notice.showModal());
+        notice.showModal();
+        return;
+      }
+
+      notice.hidden = false;
+      notice.style.display = 'block';
+    }
+
+    function start() {
+      detect().then((detected) => {
+        window.adBlockRunning = detected;
+
+        if (detected === true) {
+          showNotice();
+        }
+      });
+    }
+
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('[data-detect-adblock-reload]')) {
+        location.reload();
+      }
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
+  })();
 </script>
