@@ -1,3 +1,14 @@
+<?php
+
+/**
+ * @var \Kirby\Cms\App $kirby
+ * @var string $title Title of the warning
+ * @var string $text Text of the warning
+ * @var string $button Text of the reload button
+ */
+
+$kirby ??= kirby();
+?>
 <style nonce="<?= esc($kirby->nonce(), 'attr') ?>">
     .detect-adblock {
         box-sizing: border-box;
@@ -38,7 +49,7 @@
 </style>
 
 <dialog class="detect-adblock" aria-labelledby="detect-adblock-title" aria-describedby="detect-adblock-text" data-detect-adblock>
-    <h2 id="detect-adblock-title"><?= esc(option('owebstudio.detect-adblock.title')) ?></h2>
-    <p id="detect-adblock-text"><?= esc(option('owebstudio.detect-adblock.text')) ?></p>
-    <button type="button" data-detect-adblock-reload><?= esc(option('owebstudio.detect-adblock.button')) ?></button>
+    <h2 id="detect-adblock-title"><?= esc($title) ?></h2>
+    <p id="detect-adblock-text"><?= esc($text) ?></p>
+    <button type="button" data-detect-adblock-reload><?= esc($button) ?></button>
 </dialog>

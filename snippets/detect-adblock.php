@@ -1,4 +1,30 @@
-<?php snippet('detect-adblock-overlay') ?>
+<?php
+
+/**
+ * @var \Kirby\Cms\App $kirby
+ * @var string|array|null $title Title of the warning, or one per language code
+ * @var string|array|null $text Text of the warning, or one per language code
+ * @var string|array|null $button Text of the reload button, or one per language code
+ */
+
+$kirby ??= kirby();
+
+$translate = function (string $key, string|array|null $value): string {
+    $value ??= option('owebstudio.detect-adblock.' . $key);
+
+    if (is_array($value) === true) {
+        return (string)t($value);
+    }
+
+    return $value ?? (string)t('owebstudio.detect-adblock.' . $key);
+};
+
+snippet('detect-adblock-overlay', [
+    'title' => $translate('title', $title ?? null),
+    'text' => $translate('text', $text ?? null),
+    'button' => $translate('button', $button ?? null),
+]);
+?>
 
 <script nonce="<?= esc($kirby->nonce(), 'attr') ?>">
   window.addEventListener('load', function () {
